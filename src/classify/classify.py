@@ -30,7 +30,7 @@ class Classify:
 
 
     def classify(self, img0):
-        if img0 == None:
+        if img0.shape is None:
             raise Exception("Image is none!")
 
         # img = self.preprocess.preprocess(np.copy(img0))
@@ -43,7 +43,7 @@ class Classify:
             crop_size_1 = 130
             crop_size_2 = 130
 
-            img_crop_pad = self.original_image[
+            img_crop_pad = img0[
                 point.c1[1] - crop_size_1 : point.c2[1] + crop_size_1,
                 point.c1[0] - crop_size_2 : point.c2[0] + crop_size_2,
                 ::1,
@@ -53,16 +53,15 @@ class Classify:
                 img_crop_pad, (self.width, self.height), interpolation=cv2.INTER_AREA
             )
 
+
             images_result.append(
                 {point.label: self.segmentation.segmentation(point.label, img_crop_pad)}
             )
 
-        return images_result[0]
+        return img_crop_pad
 
 
     def detect(self, img0):
-        print(img0.shape)
-        
         img = letterbox(
             img0, new_shape=self.new_shape, stride=self.stride, auto=False
         )[0]
@@ -75,9 +74,6 @@ class Classify:
 
         if len(img.shape) == 3:
             img = img[None]
-
-        print(img.shape)
-        print(type(img))
 
         pred = torch.tensor(
             self.session.run(

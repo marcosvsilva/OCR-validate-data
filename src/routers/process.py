@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 
 from PIL import Image
 from io import BytesIO
@@ -26,13 +27,13 @@ async def process(image: UploadFile = File(...)):
     contents = await image.read()
 
     stream = BytesIO(contents)
-    img = Image.open(stream).convert("RGBA")
+    img0 = Image.open(stream).convert("RGB")
+    img = np.asarray(img0)
     stream.close()
 
     classify = Classify()
     result = classify.classify(img)
 
-    cv2.imshow("test", result)
-    cv2.waitKey(0)
+    print(result)
 
     return result

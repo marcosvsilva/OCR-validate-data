@@ -35,21 +35,7 @@ class Segmentation:
         img_marker = cv2.circle(img_marker, p3, 4, color, 2)
         img_marker = cv2.circle(img_marker, p4, 4, color, 2)
 
-        # cv2.imwrite(
-        #     r"C:\Users\marco\Pictures\DatasetOCR\menores\resultado_crop_tmp\img_marker.png",
-        #     img_marker,
-        # )
-        # cv2.imwrite(
-        #     r"C:\Users\marco\Pictures\DatasetOCR\menores\resultado_crop_tmp\smoothed.png",
-        #     smoothed,
-        # )
-
         points = np.array([p1, p2, p3, p4])
-
-        # warped = four_point_transform(image, points)
-        # warped_resize = cv2.resize(
-        #     warped, (self.width, self.height), interpolation=cv2.INTER_AREA
-        # )
 
         list_images_for_ocr = self.segmentation_parts(image, type_document)
 
@@ -82,23 +68,19 @@ class Segmentation:
             cnh_nome_c2 = (540, 150)
 
             nome = image[
-                cnh_nome_c1[1] : cnh_nome_c2[1], cnh_nome_c1[0] : cnh_nome_c2[0], ::1
+                cnh_nome_c1[1] : cnh_nome_c2[1],
+                cnh_nome_c1[0] : cnh_nome_c2[0], ::1
             ]
             list_images.append({"nome": nome})
 
-            # cv2.imwrite(
-            #     r"C:\Users\marco\Pictures\DatasetOCR\menores\resultado_crop_tmp\nome.png",
-            #     nome,
-            # )
-
             cnh_id_c1 = (320, 210)
             cnh_id_c2 = (450, 230)
-            cpf = image[cnh_id_c1[1] : cnh_id_c2[1], cnh_id_c1[0] : cnh_id_c2[0], ::1]
+
+            cpf = image[
+                cnh_id_c1[1] : cnh_id_c2[1],
+                cnh_id_c1[0] : cnh_id_c2[0], ::1    
+            ]
             list_images.append({"cpf": cpf})
-            # cv2.imwrite(
-            #     r"C:\Users\marco\Pictures\DatasetOCR\menores\resultado_crop_tmp\cpf.png",
-            #     cpf,
-            # )
 
             cnh_filiacao_c1 = (320, 240)
             cnh_filiacao_c2 = (560, 335)
@@ -110,11 +92,6 @@ class Segmentation:
             ]
             list_images.append({"filiacao": filiacao})
 
-            # cv2.imwrite(
-            #     r"C:\Users\marco\Pictures\DatasetOCR\menores\resultado_crop_tmp\filiacao.png",
-            #     filiacao,
-            # )
-
             cnh_nregistro_c1 = (130, 400)
             cnh_nregistro_c2 = (300, 420)
 
@@ -124,10 +101,5 @@ class Segmentation:
                 ::1,
             ]
             list_images.append({"nregistro": nregistro})
-
-            # cv2.imwrite(
-            #     r"C:\Users\marco\Pictures\DatasetOCR\menores\resultado_crop_tmp\nregistro.png",
-            #     nregistro,
-            # )
 
         return list_images
